@@ -1,11 +1,11 @@
 #include <regex>
 #include <vector>
 
-std::regex singleLineComment(R"(//.*?$)");
-std::regex funcDefPattern(R"((?:int|float|double|void|char)\s*([a-zA-Z_]\w*)\s*\([^)]*\)\s*\{)");
-std::regex funcCallPattern(R"(([a-zA-Z_]\w*)\s*\([^)]*\)\s*;)");
+extern std::regex singleLineComment;
+extern std::regex funcDefPattern;
+extern std::regex funcCallPattern;
 
-
-bool removecomment(std::string src, std::string dst);
-std::vector<std::string> getFuncDef(std::string fileName);
+void removecomment(std::string src, std::string dst);
+std::vector<std::string> parseFuncDef(std::string fileName);
 std::vector<std::vector<std::string>> getFuncCall(std::string fileName);
+
