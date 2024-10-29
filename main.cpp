@@ -16,9 +16,7 @@ regex singleLineComment(R"(//.*?$)");
 regex funcDefPattern(R"((?:int|float|double|void|char)\s*([a-zA-Z_]\w*)\s*\([^)]*\)\s*\{)");
 regex funcCallPattern(R"(([a-zA-Z_]\w*)\s*\([^)]*\)\s*;)");
 
-string removeComments(const string &s){
-    return regex_replace(s, singleLineComment, "");
-}
+bool removecomment(std::string src, std::string dst);
 
 bool detectFuncDef(const string &s){
     smatch matchs;
@@ -39,16 +37,23 @@ void detectFuncCall(const string &s){
     return;   
 }
 
+
+
 int main(){
-    test.open("D://Programming//Algorithms//NJUPT_AlgorithmsLab//problem6//test.c", std::ios::in);
+    string testFile = "D://Programming//Algorithms//NJUPT_AlgorithmsLab//problem6//test.c";
+    string new_testFile = "D://Programming//Algorithms//NJUPT_AlgorithmsLab//problem6//newtest.c";
+    if(!removecomment(testFile, new_testFile)){
+        std::cout << "error" << std::endl;
+        return 0;
+    }
+    test.open(new_testFile, std::ios::in);
     if(!test.is_open()){
         std::cout << "can not open test file" << std::endl;
         return 0;
     }
     std::string s;
     int funcN = 0;
-    while(getline(test,s)){
-    	s = removeComments(s); 
+    while(getline(test,s)){ 
         if(detectFuncDef(s)){
             funcN++;
             if(funcN != 1){
@@ -73,4 +78,31 @@ int main(){
 
     test.close();
     return 0;
+}
+
+string removeSingleComment(const string &s){
+    return regex_replace(s, singleLineComment, "");
+}
+
+bool removecomment(std::string src, std::string dst){
+    std::ifstream srcfile;
+    std::ofstream dstfile;
+    srcfile.open(src, std::ios::in);
+    if(!srcfile.is_open()){
+        std::cout << "can not open src file" << std::endl;
+        return false;
+    }
+    dstfile.open(dst, std::ios::trunc);
+    if(!srcfile.is_open()){
+        std::cout << "can not open dst file" << std::endl;
+        return false;
+    }
+    std::string line;
+    while(getline(srcfile, line)){
+        line = removeSingleComment(line);
+        dstfile << line << std::endl;
+    }
+    srcfile.close();
+    dstfile.close();
+    return true;
 }
