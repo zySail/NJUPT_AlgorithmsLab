@@ -9,29 +9,32 @@ using namespace std;
 
 std::ifstream test;
 vector<string> functions;
+vector<vector<string>> calledfunctions;
+vector<string> tmp;
 
 regex singleLineComment(R"(//.*?$)");
-regex funcDefPattern(R"((?:int|float|double|void|char)\s*((?!main)\b[a-zA-Z_]\w*)\s*\([^)]*\)\s*\{)");
+regex funcDefPattern(R"((?:int|float|double|void|char)\s*([a-zA-Z_]\w*)\s*\([^)]*\)\s*\{)");
 regex funcCallPattern(R"(([a-zA-Z_]\w*)\s*\([^)]*\)\s*;)");
 
-string removeComments(const string &s) {
+string removeComments(const string &s){
     return regex_replace(s, singleLineComment, "");
 }
 
-void detectFuncDef(const string &s){
+bool detectFuncDef(const string &s){
     smatch matchs;
-    if (regex_search(s, matchs, funcDefPattern)) {
-        //cout << matchs[1] << endl;
+    if(regex_search(s, matchs, funcDefPattern)){
+        //cout << "define: " << matchs[1] << endl;
         functions.push_back(matchs[1]);
+        return true;
     }
-    return;
+    return false;
 }
 
 void detectFuncCall(const string &s){
     smatch matchs;
-    if (regex_search(s, matchs, funcCallPattern)) {
-        cout << matchs[1] << endl;
-        //functions.push_back(matchs[1]);
+    if(regex_search(s, matchs, funcCallPattern)){
+        //cout << "--called: " << matchs[1] << endl;
+        tmp.push_back(matchs[1]);
     }
     return;   
 }
@@ -43,13 +46,31 @@ int main(){
         return 0;
     }
     std::string s;
+    int funcN = 0;
     while(getline(test,s)){
     	s = removeComments(s); 
-        detectFuncCall(s);
+        if(detectFuncDef(s)){
+            funcN++;
+            if(funcN != 1){
+                calledfunctions.push_back(tmp); // push the old func call
+            }
+            tmp.clear();
+        }
+        else{
+            detectFuncCall(s);
+        }
     }
-    // for (const auto &funcName : functions) {
-    //     cout << funcName << endl;
-    // }
+    calledfunctions.push_back(tmp); // push the last func call
+    tmp.clear();
+
+    for(size_t i = 0; i < functions.size(); i++){
+        cout << functions[i] << endl;
+        for(const string &str : calledfunctions[i]){
+            cout << "--" << str << endl;
+        }
+        cout << endl;
+    }
+
     test.close();
     return 0;
 }
