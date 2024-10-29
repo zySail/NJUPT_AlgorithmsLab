@@ -1,25 +1,22 @@
 #include <iostream>
 #include <fstream>
-#include <regex>
 #include <vector>
 //#include <sstream>
 //#include <string>
+#include "parse.h"
 
-using namespace std;
+//using namespace std;
 
 std::ifstream test;
-vector<string> functions;
-vector<vector<string>> calledfunctions;
-vector<string> tmp;
+std::vector<std::string> functions;
+std::vector<std::vector<std::string>> calledfunctions;
+std::vector<std::string> tmp;
 
-regex singleLineComment(R"(//.*?$)");
-regex funcDefPattern(R"((?:int|float|double|void|char)\s*([a-zA-Z_]\w*)\s*\([^)]*\)\s*\{)");
-regex funcCallPattern(R"(([a-zA-Z_]\w*)\s*\([^)]*\)\s*;)");
 
 bool removecomment(std::string src, std::string dst);
 
-bool detectFuncDef(const string &s){
-    smatch matchs;
+bool detectFuncDef(const std::string &s){
+    std::smatch matchs;
     if(regex_search(s, matchs, funcDefPattern)){
         //cout << "define: " << matchs[1] << endl;
         functions.push_back(matchs[1]);
@@ -28,8 +25,8 @@ bool detectFuncDef(const string &s){
     return false;
 }
 
-void detectFuncCall(const string &s){
-    smatch matchs;
+void detectFuncCall(const std::string &s){
+    std::smatch matchs;
     if(regex_search(s, matchs, funcCallPattern)){
         //cout << "--called: " << matchs[1] << endl;
         tmp.push_back(matchs[1]);
@@ -37,15 +34,14 @@ void detectFuncCall(const string &s){
     return;   
 }
 
-
-
 int main(){
-    string testFile = "D://Programming//Algorithms//NJUPT_AlgorithmsLab//problem6//test.c";
-    string new_testFile = "D://Programming//Algorithms//NJUPT_AlgorithmsLab//problem6//newtest.c";
-    if(!removecomment(testFile, new_testFile)){
-        std::cout << "error" << std::endl;
-        return 0;
-    }
+    std::string testFile = "D://Programming//Algorithms//NJUPT_AlgorithmsLab//problem6//test.c";
+    std::string new_testFile = "D://Programming//Algorithms//NJUPT_AlgorithmsLab//problem6//newtest.c";
+    // if(!removecomment(testFile, new_testFile)){
+    //     std::cout << "error" << std::endl;
+    //     return 0;
+    // }
+
     test.open(new_testFile, std::ios::in);
     if(!test.is_open()){
         std::cout << "can not open test file" << std::endl;
@@ -69,40 +65,14 @@ int main(){
     tmp.clear();
 
     for(size_t i = 0; i < functions.size(); i++){
-        cout << functions[i] << endl;
-        for(const string &str : calledfunctions[i]){
-            cout << "--" << str << endl;
+        std::cout << functions[i] << std::endl;
+        for(const std::string &str : calledfunctions[i]){
+            std::cout << "--" << str << std::endl;
         }
-        cout << endl;
+        std::cout << std::endl;
     }
 
     test.close();
     return 0;
 }
 
-string removeSingleComment(const string &s){
-    return regex_replace(s, singleLineComment, "");
-}
-
-bool removecomment(std::string src, std::string dst){
-    std::ifstream srcfile;
-    std::ofstream dstfile;
-    srcfile.open(src, std::ios::in);
-    if(!srcfile.is_open()){
-        std::cout << "can not open src file" << std::endl;
-        return false;
-    }
-    dstfile.open(dst, std::ios::trunc);
-    if(!srcfile.is_open()){
-        std::cout << "can not open dst file" << std::endl;
-        return false;
-    }
-    std::string line;
-    while(getline(srcfile, line)){
-        line = removeSingleComment(line);
-        dstfile << line << std::endl;
-    }
-    srcfile.close();
-    dstfile.close();
-    return true;
-}
