@@ -2,6 +2,10 @@
 #include <iostream>
 #include <fstream>
 
+//int total;
+std::vector<std::string> functionNames;
+std::vector<std::vector<std::string>> calledFunctionNames;
+
 std::regex singleLineComment(R"(//.*?$)");
 std::regex funcDefPattern(R"((?:int|float|double|void|char)\s*([a-zA-Z_]\w*)\s*\([^)]*\)\s*\{)");
 std::regex funcCallPattern(R"(([a-zA-Z_]\w*)\s*\([^)]*\)\s*;)");
@@ -64,21 +68,54 @@ std::vector<std::string> parseFuncDef(std::string fileName){
 
     std::string line;
     std::string funcName;
-    std::vector<std::string> functions;
+    //std::vector<std::string> functionNames;
     while(getline(file, line)){
         funcName = detectFuncDef(line);
         if(!funcName.empty()){
-            functions.push_back(funcName);
+            functionNames.push_back(funcName);
         }
     }
 
     file.close();
-
-    return functions;
+    //total = functionNames.size();
+    return functionNames;
 }
 
 
-// open file, detect all function calls after a function definition and store them in vector
-std::vector<std::vector<std::string>> getFuncCall(std::string fileName){
+// open file, get all function calls after detecting a function definition and store them in vector
+std::vector<std::vector<std::string>> parseFuncCall(std::string fileName){
+    std::ifstream file;
+    file.open(fileName, std::ios::in);
+    if(!file.is_open()){
+        std::cerr << "can not open src file" << std::endl;
+    }
 
+    std::string line;
+    std::string funcName;
+    //std::vector<std::vector<std::string>> calledFunctionNames(total);
+    calledFunctionNames.resize(functionNames.size());
+    int n = -1;
+    while(getline(file, line)){
+        funcName = detectFuncDef(line);
+        if(!funcName.empty()){ // when detect a function def, pointer to next vector 
+            n++;
+            continue;
+        }
+        funcName = detectFuncCall(line);
+        if(!funcName.empty()){
+            calledFunctionNames[n].push_back(funcName);
+        }
+    }
+    file.close();
+    return calledFunctionNames;
+}
+
+void printRelationship(void){
+    for(size_t i = 0; i < functionNames.size(); i++){
+        std::cout << functionNames[i] << std::endl;
+        for(const std::string &str : calledFunctionNames[i]){
+            std::cout << "--" << str << std::endl;
+        }
+        std::cout << std::endl;
+    }
 }

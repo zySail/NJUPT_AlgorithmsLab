@@ -6,10 +6,8 @@
 //#include <string>
 #include "parse.h"
 
-//using namespace std;
-
-std::vector<std::string> functionNames;
-std::vector<std::vector<std::string>> calledfunctions;
+// std::vector<std::string> functionNames;
+// std::vector<std::vector<std::string>> calledfunctionNames;
 
 
 int main(){
@@ -20,18 +18,9 @@ int main(){
     // removecomment(testFile, new_testFile)
 
     functionNames = parseFuncDef(new_testFile);
-    for(const std::string &s : functionNames){
-        std::cout << s << std::endl;
-    }
-
-    // for(size_t i = 0; i < functions.size(); i++){
-    //     std::cout << functions[i] << std::endl;
-    //     for(const std::string &str : calledfunctions[i]){
-    //         std::cout << "--" << str << std::endl;
-    //     }
-    //     std::cout << std::endl;
-    // }
-
+    calledFunctionNames = parseFuncCall(new_testFile);
+    printRelationship();
+    
     return 0;
 }
 
