@@ -7,9 +7,6 @@
 #include "parse.h"
 #include "graph.h"
 
-// std::vector<std::string> functionNames;
-// std::vector<std::vector<std::string>> calledfunctionNames;
-
 
 int main(){
     //std::string testFile = "D://Programming//Algorithms//NJUPT_AlgorithmsLab//problem6//test.c";
@@ -22,8 +19,9 @@ int main(){
     parseFuncCall(new_testFile);
     printRelationship();
     
-    createMatrix();
-    printMatrix();
+    createGraph();
+    printGraph();
+    findRecFunc();
     
     return 0;
 }

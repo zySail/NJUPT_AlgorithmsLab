@@ -2,5 +2,6 @@
 
 extern std::vector<std::vector<int>> matrix;
 
-void createMatrix(void);
-void printMatrix(void);
+void createGraph(void);
+void printGraph(void);
+void findRecFunc(void);

@@ -2,10 +2,8 @@
 #include <iostream>
 #include <fstream>
 
-//int total;
 std::vector<std::string> functionNames; // store function names
 std::vector<std::vector<std::string>> calledFunctionNames; // store the called function names
-//std::map<std::string, int> Name2Num;
 
 std::regex singleLineComment(R"(//.*?$)");
 std::regex funcDefPattern(R"((?:int|float|double|void|char)\s*([a-zA-Z_]\w*)\s*\([^)]*\)\s*\{)");
@@ -60,7 +58,6 @@ void removecomment(std::string src, std::string dst){
 
 
 // open file, detect all function definitions and store them in vector
-//std::vector<std::string> parseFuncDef(std::string fileName){
 void parseFuncDef(std::string fileName){
     std::ifstream file;
     file.open(fileName, std::ios::in);
@@ -79,14 +76,11 @@ void parseFuncDef(std::string fileName){
     }
 
     file.close();
-    //total = functionNames.size();
-    //return functionNames;
     return;
 }
 
 
 // open file, get all function calls after detecting a function definition and store them in vector
-//std::vector<std::vector<std::string>> parseFuncCall(std::string fileName){
 void parseFuncCall(std::string fileName){
     std::ifstream file;
     file.open(fileName, std::ios::in);
@@ -96,7 +90,6 @@ void parseFuncCall(std::string fileName){
 
     std::string line;
     std::string funcName;
-    //std::vector<std::vector<std::string>> calledFunctionNames(total);
     calledFunctionNames.resize(functionNames.size());
     int n = -1;
     while(getline(file, line)){
@@ -111,7 +104,6 @@ void parseFuncCall(std::string fileName){
         }
     }
     file.close();
-    //return calledFunctionNames;
     return;
 }
 
