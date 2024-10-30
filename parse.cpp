@@ -3,8 +3,9 @@
 #include <fstream>
 
 //int total;
-std::vector<std::string> functionNames;
-std::vector<std::vector<std::string>> calledFunctionNames;
+std::vector<std::string> functionNames; // store function names
+std::vector<std::vector<std::string>> calledFunctionNames; // store the called function names
+//std::map<std::string, int> Name2Num;
 
 std::regex singleLineComment(R"(//.*?$)");
 std::regex funcDefPattern(R"((?:int|float|double|void|char)\s*([a-zA-Z_]\w*)\s*\([^)]*\)\s*\{)");
@@ -118,4 +119,13 @@ void printRelationship(void){
         }
         std::cout << std::endl;
     }
+}
+
+int getFuncNum(const std::string &funcName){
+    for (size_t i = 0; i < functionNames.size(); ++i) {
+        if (functionNames[i] == funcName) {
+            return static_cast<int>(i);
+        }
+    }
+    return -1;
 }

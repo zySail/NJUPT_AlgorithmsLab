@@ -19,7 +19,8 @@ int main(){
 
     functionNames = parseFuncDef(new_testFile);
     calledFunctionNames = parseFuncCall(new_testFile);
-    printRelationship();
+    //printRelationship();
+    std::cout << getFuncNum("funcA") << std::endl;
     
     return 0;
 }
