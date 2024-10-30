@@ -17,10 +17,9 @@ int main(){
     std::string new_testFile = "newtest.c";
     // removecomment(testFile, new_testFile)
 
-    functionNames = parseFuncDef(new_testFile);
-    calledFunctionNames = parseFuncCall(new_testFile);
-    //printRelationship();
-    std::cout << getFuncNum("funcA") << std::endl;
+    parseFuncDef(new_testFile);
+    parseFuncCall(new_testFile);
+    printRelationship();
     
     return 0;
 }

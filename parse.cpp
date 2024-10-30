@@ -60,7 +60,8 @@ void removecomment(std::string src, std::string dst){
 
 
 // open file, detect all function definitions and store them in vector
-std::vector<std::string> parseFuncDef(std::string fileName){
+//std::vector<std::string> parseFuncDef(std::string fileName){
+void parseFuncDef(std::string fileName){
     std::ifstream file;
     file.open(fileName, std::ios::in);
     if(!file.is_open()){
@@ -79,12 +80,14 @@ std::vector<std::string> parseFuncDef(std::string fileName){
 
     file.close();
     //total = functionNames.size();
-    return functionNames;
+    //return functionNames;
+    return;
 }
 
 
 // open file, get all function calls after detecting a function definition and store them in vector
-std::vector<std::vector<std::string>> parseFuncCall(std::string fileName){
+//std::vector<std::vector<std::string>> parseFuncCall(std::string fileName){
+void parseFuncCall(std::string fileName){
     std::ifstream file;
     file.open(fileName, std::ios::in);
     if(!file.is_open()){
@@ -108,7 +111,8 @@ std::vector<std::vector<std::string>> parseFuncCall(std::string fileName){
         }
     }
     file.close();
-    return calledFunctionNames;
+    //return calledFunctionNames;
+    return;
 }
 
 void printRelationship(void){
