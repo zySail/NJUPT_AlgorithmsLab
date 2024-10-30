@@ -5,6 +5,7 @@
 //#include <sstream>
 //#include <string>
 #include "parse.h"
+#include "graph.h"
 
 // std::vector<std::string> functionNames;
 // std::vector<std::vector<std::string>> calledfunctionNames;
@@ -20,6 +21,9 @@ int main(){
     parseFuncDef(new_testFile);
     parseFuncCall(new_testFile);
     printRelationship();
+    
+    createMatrix();
+    printMatrix();
     
     return 0;
 }
