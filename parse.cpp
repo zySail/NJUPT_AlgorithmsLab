@@ -80,6 +80,13 @@ void parseFuncDef(std::string fileName){
     return;
 }
 
+bool isDefed(std::string funcName){
+    for(const std::string &s : functionNames){
+        if(funcName == s)
+            return true;
+    }
+    return false;
+}
 
 // open file, get all function calls after detecting a function definition and store them in vector
 void parseFuncCall(std::string fileName){
@@ -100,7 +107,7 @@ void parseFuncCall(std::string fileName){
             continue;
         }
         funcName = detectFuncCall(line);
-        if(!funcName.empty()){
+        if(!funcName.empty() && isDefed(funcName)){
             calledFunctionNames[n].push_back(funcName);
         }
     }
