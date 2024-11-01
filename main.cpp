@@ -22,6 +22,8 @@ int main(){
     createGraph();
     printGraph();
     findRecFunc();
+    setMaxCallTimes();
+    analyzeRec();
     
     return 0;
 }
