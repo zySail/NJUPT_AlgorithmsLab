@@ -7,7 +7,7 @@ std::vector<std::vector<std::string>> calledFunctionNames; // store the called f
 void printRelationship(void);
 
 std::regex singleLineComment(R"(//.*?$)");
-std::regex funcDefPattern(R"((?:int|float|double|void|char)\s*([a-zA-Z_]\w*)\s*\([^)]*\)\s*\{)");
+std::regex funcDefPattern(R"((?:int|float|double|void|char)\s*([a-zA-Z_]\w*)\s*\([^)]*\)\s*\{?(?!;)$)");
 std::regex funcCallPattern(R"(([a-zA-Z_]\w*)\s*\([^)]*\)\s*;)");
 
 std::string removeSingleComment(const std::string &s){
