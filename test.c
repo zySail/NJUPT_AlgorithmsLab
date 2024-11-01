@@ -6,7 +6,7 @@ int main() {
 void funcA() {
     std::cout << "In funcA" << std::endl;
     funcB();  // 调用 funcB
-    funcC();  // 调用 funcC
+    funcC();  // 调用 funcC 
 }
 void funcB() {
     std::cout << "In funcB" << std::endl;
