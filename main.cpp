@@ -1,7 +1,3 @@
-#include <iostream>
-#include <fstream>
-#include <vector>
-#include <regex>
 #include "parse.h"
 #include "graph.h"
 
