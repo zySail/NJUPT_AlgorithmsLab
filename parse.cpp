@@ -4,6 +4,7 @@
 
 std::vector<std::string> functionNames; // store function names
 std::vector<std::vector<std::string>> calledFunctionNames; // store the called function names
+void printRelationship(void);
 
 std::regex singleLineComment(R"(//.*?$)");
 std::regex funcDefPattern(R"((?:int|float|double|void|char)\s*([a-zA-Z_]\w*)\s*\([^)]*\)\s*\{)");
@@ -16,7 +17,6 @@ std::string removeSingleComment(const std::string &s){
 std::string detectFuncDef(const std::string &line){
     std::smatch matchs;
     if(regex_search(line, matchs, funcDefPattern)){
-        //cout << "define: " << matchs[1] << endl;
         return matchs[1];
     }
     return "";
@@ -25,7 +25,6 @@ std::string detectFuncDef(const std::string &line){
 std::string detectFuncCall(const std::string &s){
     std::smatch matchs;
     if(regex_search(s, matchs, funcCallPattern)){
-        //cout << "--called: " << matchs[1] << endl;
         return matchs[1];
     }
     return "";   
@@ -34,6 +33,9 @@ std::string detectFuncCall(const std::string &s){
 
 // read src file, remove comments and write into dst file
 void removecomment(std::string src, std::string dst){
+#ifdef DEBUG
+    return;
+#else   
     std::ifstream srcfile;
     std::ofstream dstfile;
     srcfile.open(src, std::ios::in);
@@ -54,8 +56,8 @@ void removecomment(std::string src, std::string dst){
     srcfile.close();
     dstfile.close();
     return;
+#endif
 }
-
 
 // open file, detect all function definitions and store them in vector
 void parseFuncDef(std::string fileName){
@@ -67,7 +69,6 @@ void parseFuncDef(std::string fileName){
 
     std::string line;
     std::string funcName;
-    //std::vector<std::string> functionNames;
     while(getline(file, line)){
         funcName = detectFuncDef(line);
         if(!funcName.empty()){
@@ -104,10 +105,15 @@ void parseFuncCall(std::string fileName){
         }
     }
     file.close();
+#ifdef DEBUG
+    printRelationship();
+#else
+#endif
     return;
 }
 
 void printRelationship(void){
+    std::cout << "function call relationship:" << std::endl;
     for(size_t i = 0; i < functionNames.size(); i++){
         std::cout << functionNames[i] << std::endl;
         for(const std::string &str : calledFunctionNames[i]){
