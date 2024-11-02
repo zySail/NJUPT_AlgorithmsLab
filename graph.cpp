@@ -129,6 +129,7 @@ void analyzeRec(void){
     callTimes.resize(nNodes, 0);
     for(const int i : adjList[0]){
         recordFuncCall(i);
+        drawFuncCall();
     }
     // printf rec funcs' call times and max depth
     std::cout << "Function Call Statistics:" << std::endl;
@@ -152,7 +153,6 @@ void drawFuncCall(void){
         int currentFunc = funcCallOrder[i];
         dotFile << "    " << functionNames[currentFunc] << ";\n";
 
-        // 如果不是最后一个函数，记录边
         if (i < funcCallOrder.size() - 1) {
             int nextFunc = funcCallOrder[i + 1];
             dotFile << "    " << functionNames[currentFunc] << " -> " << functionNames[nextFunc] << ";\n";

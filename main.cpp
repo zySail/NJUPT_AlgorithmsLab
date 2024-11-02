@@ -13,7 +13,6 @@ int main(){
     findRecFunc();
     setMaxCallTimes();
     analyzeRec();
-    drawFuncCall();
 
     return 0;
 }
