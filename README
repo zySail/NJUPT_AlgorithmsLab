@@ -54,3 +54,15 @@ funcA: Called 4 times（调用次数）, Max Depth: 7（最大递归层数）
 funcB: Called 3 times, Max Depth: 6
 funcD: Called 5 times, Max Depth: 7
 
+相较测试文件提升之处：
+1.支持忽略函数声明，只检测函数定义
+2.支持检测main函数中调用多函数的识别和递归检测
+3.支持忽略文件中未定义的函数调用检测，如printf()、for()等等
+
+
+项目缺陷:
+1.无法去除多行注释
+2.无法识别main函数中定义的函数
+3.无法绘出多分支函数调用
+4.无法绘出main函数中调用多个函数的函数调用图
+
