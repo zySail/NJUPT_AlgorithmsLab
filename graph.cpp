@@ -1,4 +1,6 @@
 #include <iostream>
+#include <fstream>
+#include <cstdlib>
 #include "graph.h"
 #include "parse.h"
 
@@ -8,6 +10,7 @@ std::vector<int> recFuncList; // store recursive function numbers
 std::vector<int> MaxCallTimes; // store a function max call time
 std::vector<int> maxDepth; // record maxdepth a function can arrive 
 std::vector<int> callTimes; // record a function call time
+std::vector<int> funcCallOrder; // record the order that function be called
 
 void printGraph(void);
 
@@ -101,6 +104,7 @@ void setMaxCallTimes(void){
 }
 
 void dfs_depth(int v, int depth){
+    funcCallOrder.push_back(v);
     if(depth > maxDepth[v])
         maxDepth[v] = depth;
     if(callTimes[v] < MaxCallTimes[v])
@@ -114,6 +118,8 @@ void dfs_depth(int v, int depth){
 }
 
 void recordFuncCall(int start){ // record func call Times and max depth from func start
+    funcCallOrder.clear();
+    funcCallOrder.push_back(0);
     dfs_depth(start, 1);
     return;
 }
@@ -129,5 +135,33 @@ void analyzeRec(void){
     for(const int i : recFuncList){
         std::cout << functionNames[i] << " Called " << callTimes[i] << " times, Max Depth: " << maxDepth[i] << std::endl;
     }
+}
+
+void drawFuncCall(void){
+    std::ofstream dotFile("functionCall.dot");
+    if (!dotFile) {
+        std::cerr << "Unable to open file!" << std::endl;
+        return;
+    }
+
+    dotFile << "digraph FunctionCalls {\n";
+    dotFile << "    rankdir=TB;\n";
+    dotFile << "    node [shape=ellipse];\n";
+
+    for (size_t i = 0; i < funcCallOrder.size(); ++i) {
+        int currentFunc = funcCallOrder[i];
+        dotFile << "    " << functionNames[currentFunc] << ";\n";
+
+        // 如果不是最后一个函数，记录边
+        if (i < funcCallOrder.size() - 1) {
+            int nextFunc = funcCallOrder[i + 1];
+            dotFile << "    " << functionNames[currentFunc] << " -> " << functionNames[nextFunc] << ";\n";
+        }
+    }
+
+    dotFile << "}\n";
+    dotFile.close();
+
+    system("dot -Tpng functionCall.dot -o functionCall.png");
 }
 

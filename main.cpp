@@ -1,6 +1,5 @@
 #include "parse.h"
 #include "graph.h"
-//#include <cstdlib>
 
 int main(){
     std::string testFile = "test.c";
@@ -14,8 +13,7 @@ int main(){
     findRecFunc();
     setMaxCallTimes();
     analyzeRec();
-    
-    //system("dot -Tpng graph.dot -o graph.png");
+    drawFuncCall();
 
     return 0;
 }
