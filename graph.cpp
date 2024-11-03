@@ -140,29 +140,29 @@ void analyzeRec(void){
 }
 
 void drawFuncCall(void){
-    std::ofstream dotFile("functionCall.dot");
+    std::ofstream dotFile("output\\functionCall.dot");
     if (!dotFile) {
         std::cerr << "Unable to open file!" << std::endl;
         return;
     }
 
     dotFile << "digraph FunctionCalls {\n";
-    dotFile << "    rankdir=TB;\n";
-    dotFile << "    node [shape=ellipse];\n";
+    dotFile << "\trankdir=TB;\n";
+    dotFile << "\tnode [shape=ellipse];\n";
 
     for (size_t i = 0; i < funcCallOrder.size(); ++i) {
         int currentFunc = funcCallOrder[i];
-        dotFile << "    " << functionNames[currentFunc] << ";\n";
+        dotFile << "\t" << functionNames[currentFunc] << i << " [lable=" << currentFunc << "];\n";
 
         if (i < funcCallOrder.size() - 1) {
             int nextFunc = funcCallOrder[i + 1];
-            dotFile << "    " << functionNames[currentFunc] << " -> " << functionNames[nextFunc] << ";\n";
+            dotFile << "\t" << functionNames[currentFunc] << i <<  " -> " << functionNames[nextFunc] << i+1 << ";\n";
         }
     }
 
     dotFile << "}\n";
     dotFile.close();
 
-    system("dot -Tpng functionCall.dot -o functionCall.png");
+    system("dot -Tpng output\\functionCall.dot -o output\\functionCall.png");
 }
 
