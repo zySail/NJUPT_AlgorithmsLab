@@ -140,7 +140,7 @@ void analyzeRec(void){
 }
 
 void drawFuncCall(void){
-    std::ofstream dotFile("output\\functionCall.dot");
+    std::ofstream dotFile("..\\output\\functionCall.dot");
     if (!dotFile) {
         std::cerr << "Unable to open file!" << std::endl;
         return;
@@ -163,6 +163,6 @@ void drawFuncCall(void){
     dotFile << "}\n";
     dotFile.close();
 
-    system("dot -Tpng output\\functionCall.dot -o output\\functionCall.png");
+    system("dot -Tpng ..\\output\\functionCall.dot -o ..\\output\\functionCall.png");
 }
 
