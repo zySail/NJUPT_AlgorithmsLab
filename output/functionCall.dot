@@ -1,0 +1,31 @@
+digraph FunctionCalls {
+	rankdir=TB;
+	node [shape=ellipse];
+	main;
+	main -> funcA;
+	funcA;
+	funcA -> funcB;
+	funcB;
+	funcB -> funcA;
+	funcA;
+	funcA -> funcB;
+	funcB;
+	funcB -> funcA;
+	funcA;
+	funcA -> funcB;
+	funcB;
+	funcB -> funcA;
+	funcA;
+	funcA -> funcC;
+	funcC;
+	funcC -> funcD;
+	funcD;
+	funcD -> funcD;
+	funcD;
+	funcD -> funcD;
+	funcD;
+	funcD -> funcD;
+	funcD;
+	funcD -> funcD;
+	funcD;
+}
