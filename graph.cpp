@@ -13,6 +13,7 @@ std::vector<int> callTimes; // record a function call time
 std::vector<int> funcCallOrder; // record the order that function be called
 
 void printGraph(void);
+void drawFuncCall(void);
 
 void createGraph(void){
     nNodes = functionNames.size();
@@ -129,13 +130,13 @@ void analyzeRec(void){
     callTimes.resize(nNodes, 0);
     for(const int i : adjList[0]){
         recordFuncCall(i);
-        drawFuncCall();
     }
     // printf rec funcs' call times and max depth
     std::cout << "Function Call Statistics:" << std::endl;
     for(const int i : recFuncList){
         std::cout << functionNames[i] << " Called " << callTimes[i] << " times, Max Depth: " << maxDepth[i] << std::endl;
     }
+    drawFuncCall();
 }
 
 void drawFuncCall(void){
