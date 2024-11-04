@@ -6,12 +6,12 @@ std::vector<std::string> functionNames; // store function names
 std::vector<std::vector<std::string>> calledFunctionNames; // store the called function names
 void printRelationship(void);
 
-std::regex singleLineComment(R"(//.*?$)");
+std::regex singleLineCommentPattern(R"(//.*?$)");
 std::regex funcDefPattern(R"((?:int|float|double|void|char)\s*([a-zA-Z_]\w*)\s*\([^)]*\)\s*\{?(?!;)$)");
 std::regex funcCallPattern(R"(([a-zA-Z_]\w*)\s*\([^)]*\)\s*;)");
 
-std::string removeSingleComment(const std::string &s){
-    return regex_replace(s, singleLineComment, "");
+std::string removeSingleComment(const std::string &line){
+    return regex_replace(line, singleLineCommentPattern, "");
 }
 
 std::string detectFuncDef(const std::string &line){
