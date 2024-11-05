@@ -89,7 +89,7 @@ void findRecFunc(void){
 void setMaxCallTimes(void){
     MaxCallTimes.resize(nNodes, 0);
 #ifdef DEBUG
-    MaxCallTimes = {0,4,3,1,5};
+    MaxCallTimes = {0,4,3,1,5,5};
 #else
     for(int i = 1; i < nNodes; i++){
             std::cout << "set " << functionNames[i] << " max call times: ";
