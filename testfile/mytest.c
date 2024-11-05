@@ -1,16 +1,19 @@
 // mytest.c test more complex condition
 
-int main() {
-    funcA();
-    return 0;
-}
-
 void funcA() {
     funcB();  
     funcC();  
 }
 
-void funcB() {
+int main() {
+    funcA();
+    printf("hello\n");
+    funcE();
+    return 0;
+}
+
+void funcB() 
+{
     funcA();  
 }
 
@@ -20,4 +23,8 @@ void funcC() {
 
 void funcD() {
     funcD();  
+}
+
+void funcE(){
+    funcE();
 }
