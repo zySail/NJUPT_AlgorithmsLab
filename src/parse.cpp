@@ -5,6 +5,7 @@
 std::vector<std::string> functionNames; // store function names
 std::vector<std::vector<std::string>> calledFunctionNames; // store the called function names
 void printRelationship(void);
+void moveMain2First(void);
 
 std::regex singleLineCommentPattern(R"(//.*?$)");
 std::regex funcDefPattern(R"((?:int|float|double|void|char)\s*([a-zA-Z_]\w*)\s*\([^)]*\)\s*\{?(?!;)$)");
@@ -112,11 +113,26 @@ void parseFuncCall(std::string fileName){
         }
     }
     file.close();
+    moveMain2First();
 #ifdef DEBUG
     printRelationship();
 #else
 #endif
     return;
+}
+
+void moveMain2First(void){
+    if(functionNames[0] == "main")
+        return;
+    size_t i;    
+    for(i = 0; i < functionNames.size(); i++){
+        if(functionNames[i] == "main")
+            break;
+    }
+    if(i > functionNames.size())
+        std::cerr << "no main function" << std::endl;
+    std::swap(functionNames[0], functionNames[1]);
+    std::swap(calledFunctionNames[0], calledFunctionNames[i]);
 }
 
 void printRelationship(void){
