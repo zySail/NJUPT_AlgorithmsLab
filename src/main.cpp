@@ -7,7 +7,7 @@ int main(){
     std::string new_testFile = "..\\testfile\\newmytest.c";
 #else
     std::string testFile = "..\\testfile\\test.c";
-    std::string new_testFile = "..\\testfile\\mytest.c";
+    std::string new_testFile = "..\\testfile\\newtest.c";
 #endif
     removecomment(testFile, new_testFile);
 
