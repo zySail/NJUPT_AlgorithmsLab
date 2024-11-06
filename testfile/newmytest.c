@@ -1,5 +1,3 @@
-
-
 void funcA() {
     funcB();  
     funcC();  

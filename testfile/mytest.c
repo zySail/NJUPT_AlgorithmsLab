@@ -1,5 +1,3 @@
-// mytest.c test more complex condition
-
 void funcA() {
     funcB();  
     funcC();  
