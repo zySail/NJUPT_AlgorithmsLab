@@ -115,27 +115,32 @@ void dfs_depth(int v, int depth){
         if(callTimes[i] + 1 <= MaxCallTimes[i]){
             dfs_depth(i, depth+1);
         }                                                                           
-    }    
+    }
+    funcCallOrder.push_back(-1); // used to mark return times
 }
 
 void recordFuncCall(int start){ // record func call Times and max depth from func start
     funcCallOrder.clear();
     funcCallOrder.push_back(0);
     dfs_depth(start, 1);
+    printCritialPath();
     return;
 }
 
 void analyzeRec(void){
     maxDepth.resize(nNodes, 0);
     callTimes.resize(nNodes, 0);
-    for(const int i : adjList[0]){
+    for(const int i : adjList[0]){ // start from main call function
         recordFuncCall(i);
     }
     // printf rec funcs' call times and max depth
     std::cout << "Function Call Statistics:" << std::endl;
     for(const int i : recFuncList){
+        if(i < 0) 
+            continue;
         std::cout << functionNames[i] << " Called " << callTimes[i] << " times, Max Depth: " << maxDepth[i] << std::endl;
     }
+    std::cout << std::endl;
     drawFuncCall();
 }
 
@@ -164,5 +169,25 @@ void drawFuncCall(void){
     dotFile.close();
 
     system("dot -Tpng ..\\output\\functionCall.dot -o ..\\output\\functionCall.png");
+}
+
+void printCritialPath(void){
+    bool isReturning = false;
+    std::cout << "关键路径: " << std::endl;
+    for(size_t i = 0; i < funcCallOrder.size(); i++){
+        if(funcCallOrder[i] < 0){
+            if(!isReturning){
+                std::cout << "end" << std::endl;
+                isReturning = true;
+            }
+            else
+                continue;
+        }
+        else{
+            isReturning = false;
+            std::cout << functionNames[funcCallOrder[i]] << "->";
+        }
+    }
+    std::cout << std::endl;
 }
 
