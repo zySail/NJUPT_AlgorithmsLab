@@ -4,7 +4,7 @@
 int main(){
 #ifdef mytest
     std::string testFile = "..\\testfile\\mytest.c";
-    std::string new_testFile = "..\\testfile\\mytest.c";
+    std::string new_testFile = "..\\testfile\\newmytest.c";
 #else
     std::string testFile = "..\\testfile\\test.c";
     std::string new_testFile = "..\\testfile\\newtest.c";

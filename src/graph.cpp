@@ -15,6 +15,9 @@ std::ofstream dotFile;
 
 void printGraph(void);
 void drawFuncCall(void);
+void draw_start(void);
+void draw_write(void);
+void draw_end(void);
 
 void createGraph(void){
     nNodes = functionNames.size();
@@ -125,12 +128,14 @@ void recordFuncCall(int start){ // record func call Times and max depth from fun
     funcCallOrder.push_back(0);
     dfs_depth(start, 1);
     printCritialPath();
+    draw_write();
     return;
 }
 
 void analyzeRec(void){
     maxDepth.resize(nNodes, 0);
     callTimes.resize(nNodes, 0);
+    draw_start();
     for(const int i : adjList[0]){ // start from main call function
         recordFuncCall(i);
     }
@@ -142,21 +147,65 @@ void analyzeRec(void){
         std::cout << functionNames[i] << " Called " << callTimes[i] << " times, Max Depth: " << maxDepth[i] << std::endl;
     }
     std::cout << std::endl;
-    drawFuncCall();
+    draw_end();
+    //drawFuncCall();
 }
 
 void draw_start(void){
+    dotFile.open("..\\output\\functionCall.dot", std::ios::trunc);
+    if (!dotFile.is_open()) {
+        std::cerr << "Unable to open file!" << std::endl;
+        return;
+    }
 
+    dotFile << "digraph FunctionCalls {\n";
+    dotFile << "\trankdir=TB;\n";
+    dotFile << "\tnode [shape=ellipse];\n";
 }
 
 void draw_write(void){
+    for (size_t i = 0; i < funcCallOrder.size(); ++i) {
+        int currentFunc = funcCallOrder[i];
+        if(currentFunc >= 0)
+            dotFile << "\t" << functionNames[currentFunc] << i << " [lable=" << currentFunc << "];\n";
 
+        if (i < funcCallOrder.size() - 1) {
+            int nextFunc = funcCallOrder[i + 1];
+            if(nextFunc >= 0)
+                dotFile << "\t" << functionNames[currentFunc] << i <<  " -> " << functionNames[nextFunc] << i+1 << ";\n";
+        }
+    }
 }
 
 void draw_end(void){
+    dotFile << "}\n";
+    dotFile.close();
+    std::cout << "draw complete" << std::endl;
 
+    system("dot -Tpng ..\\output\\functionCall.dot -o ..\\output\\functionCall.png");
 }
 
+void printCritialPath(void){
+    bool isReturning = false;
+    std::cout << "关键路径: " << std::endl;
+    for(size_t i = 0; i < funcCallOrder.size(); i++){
+        if(funcCallOrder[i] < 0){
+            if(!isReturning){
+                std::cout << "end" << std::endl;
+                isReturning = true;
+            }
+            else
+                continue;
+        }
+        else{
+            isReturning = false;
+            std::cout << functionNames[funcCallOrder[i]] << "->";
+        }
+    }
+    std::cout << std::endl;
+}
+
+// unused, split into draw_start, draw_write and draw_end
 void drawFuncCall(void){
     dotFile.open("..\\output\\functionCall.dot", std::ios::in);
     if (!dotFile.is_open()) {
@@ -184,25 +233,5 @@ void drawFuncCall(void){
     dotFile.close();
 
     system("dot -Tpng ..\\output\\functionCall.dot -o ..\\output\\functionCall.png");
-}
-
-void printCritialPath(void){
-    bool isReturning = false;
-    std::cout << "关键路径: " << std::endl;
-    for(size_t i = 0; i < funcCallOrder.size(); i++){
-        if(funcCallOrder[i] < 0){
-            if(!isReturning){
-                std::cout << "end" << std::endl;
-                isReturning = true;
-            }
-            else
-                continue;
-        }
-        else{
-            isReturning = false;
-            std::cout << functionNames[funcCallOrder[i]] << "->";
-        }
-    }
-    std::cout << std::endl;
 }
 
