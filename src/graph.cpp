@@ -157,11 +157,13 @@ void drawFuncCall(void){
 
     for (size_t i = 0; i < funcCallOrder.size(); ++i) {
         int currentFunc = funcCallOrder[i];
-        dotFile << "\t" << functionNames[currentFunc] << i << " [lable=" << currentFunc << "];\n";
+        if(currentFunc >= 0)
+            dotFile << "\t" << functionNames[currentFunc] << i << " [lable=" << currentFunc << "];\n";
 
         if (i < funcCallOrder.size() - 1) {
             int nextFunc = funcCallOrder[i + 1];
-            dotFile << "\t" << functionNames[currentFunc] << i <<  " -> " << functionNames[nextFunc] << i+1 << ";\n";
+            if(nextFunc >= 0)
+                dotFile << "\t" << functionNames[currentFunc] << i <<  " -> " << functionNames[nextFunc] << i+1 << ";\n";
         }
     }
 
