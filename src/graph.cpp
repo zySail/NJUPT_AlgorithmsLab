@@ -11,6 +11,7 @@ std::vector<int> MaxCallTimes; // store a function max call time
 std::vector<int> maxDepth; // record maxdepth a function can arrive 
 std::vector<int> callTimes; // record a function call time
 std::vector<int> funcCallOrder; // record the order that function be called
+std::ofstream dotFile;
 
 void printGraph(void);
 void drawFuncCall(void);
@@ -144,9 +145,21 @@ void analyzeRec(void){
     drawFuncCall();
 }
 
+void draw_start(void){
+
+}
+
+void draw_write(void){
+
+}
+
+void draw_end(void){
+
+}
+
 void drawFuncCall(void){
-    std::ofstream dotFile("..\\output\\functionCall.dot");
-    if (!dotFile) {
+    dotFile.open("..\\output\\functionCall.dot", std::ios::in);
+    if (!dotFile.is_open()) {
         std::cerr << "Unable to open file!" << std::endl;
         return;
     }
