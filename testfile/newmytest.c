@@ -3,6 +3,8 @@ void funcA() {
     funcC();  
 }
 
+void funcB();
+
 int main() {
     funcA();
     printf("hello\n");
